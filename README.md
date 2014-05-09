@@ -156,3 +156,5 @@ __Rejetté__ pour le besoin étudié ici car il s'agit d'une base de données or
 + http://db-engines.com/en/system/Cassandra%3BHBase
 + http://db-engines.com/en/article/Document+Stores
 + http://db-engines.com/en/system/CouchDB%3BCouchbase%3BMongoDB
++ http://nosql.findthebest.com/
++ http://db-engines.com/en/ranking_trend

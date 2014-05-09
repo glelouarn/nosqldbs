@@ -14,7 +14,7 @@ La solution retenue devra apporter une solution à ces problématiques:
 
 #### Memcached http://memcached.org/
 
-TODO
+__Rejeté__ car ce n'est pas une base de donnée mais un système de mise en cache de données en mémoire. Certaines solutions comme Couchbase sont bassées sur Memcached.
 
 #### Redis http://redis.io/
 

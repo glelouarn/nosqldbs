@@ -128,7 +128,8 @@ http://query.pub.couchbase.com/tutorial/#1
 + Consistency: eventually consistent: conflict resolution on CouchDB is much more limited than the one of CouchBase.
 + Clustering and load balancing: recommends using HTTP load balancing software or hardware (proxies) manually. CouchDB does not natively support sharding. There are third-party tools that do it like BigCouch, Lounge or Pillow
 + Replication: replication between datacenters can be done by REST or using Futon. Automatic replication can be done using the flag ‘continuous: true’. It is not immediate, and it has an algorithm that decides the best moment for performance. Since CouchDB 1.1 it can remember replications after reboot.
-Clients: CouchDB uses a protocol based on a REST interface over HTTP so it can integrate easily with any language and technology.
++ Clients: CouchDB uses a protocol based on a REST interface over HTTP so it can integrate easily with any language and technology.
++ Performance: we have found some documents that state the low performance of the product: http://sauceio.com/index.php/2012/05/goodbye-couchdb/ http://blog.signalhq.com/2012/01/24/getting-off-the-couchdb/ Even the creator of CouchDB (now on charge of CouchBase) recognizes it: http://damienkatz.net/2012/01/the_future_of_couchdb.html#comments
 + License: it is an Apache project, so totally open source. 
 
 

@@ -62,11 +62,75 @@ __Rejetté__ car orienté _big data_.
 
 #### Couchbase http://www.couchbase.com/
 
-TODO
+#####Architecture
++ The base is a CouchDB engine with a memcache layer. 
++ Document store with unique ID.
++ Data is persisted to disk and accessible by a cached memory layer (memcached)
++ Buckets equals database. They have a name, they are shared (sharding) automatically in the cluster, can be secured by password and can be easily monitored from built-in console
++ Application can talk with one or more buckets but the buckets can’t communicate to each other.
++ The limit of buckets in a single cluster is 10
++ A bucket is divided in different vBuckets. There is a vBucket map that maps each vBucket to a node.
++ When the cluster is extended the vBucket are rebalanced (reallocated) between the different nodes (the information is “sharded” in the cluster).
+
+#####Working with CouchBase
++ Operations are very basic Create-Read-Update-Delete (CRUD operations) using the ID. Since it is a Map, the performance is always O(1).
++ It is possible to execute bulk operations (execute several basic operations as a batch on one call)
++ It is possible to specify a TTL for a document
+
+#####Consistency
++ There is always only a single active copy of data within the cluster
++ Consistency of views is a little bit more complicated (data is only eligible to be included when it is persisted in replicas and/or disk)
++ Couchbase provides strong consistency between nodes of the same cluster
++ In XDCR it provides eventual consistency (in case of conflict it takes the document with more updates)
+
+#####Concurrency
++ Only one active version of data
++ Operations are atomic
++ Some information can be updated by two hosts simultaneously. In this case it is possible to use the CAS (Compare and Swap) functionality. This allows to obtain a hash to check if the information has changed. Also, the operation can perform also explicit locking if necessary
+
+#####Replication
++ It is possible to create replicas of the buckets WITHIN the cluster. It is possible to configure up to 3 replicas. In this case, replica == backup
++ From version 2.0 there is a system to make replication between different clusters that can be geographically separated. It is called 'cross datacenter replication' (XDCR)
++ XDCR can be configured to work in unidirectional and bidirectional mode.
++ The consistency XDCR is eventual. It applies a mechanism to resolve conflicts (several updates over the same date).
++ XDCR replication works by push and is automatic and instantly
+
+#####Views
++ Exist from Couchbase 2.0 and they are the only way to perform queries/search by fields different from unique ID in CouchBase
++ Views transform documents into structured data in order to perform operations on them
++ Views use map reduce functions. Map translates document structure to table structure. Reduce simplifies and summarize, creating counts, sums, etc
++ To minimize expensiveness of map/reduce in performance CB uses an incremental map/reduce. Each map-reduce creates and index and it only reproduces and recalculates for the new data updated and not for the entire dataset.
++ If we change the definition of the view, it invalidates the index that must be reprocessed for all the data
++ Once created a view, the information is ready to be queried
++ Views are coded in JavaScript  and must be created in design time and from the admin app (although it is possible to create them from code: http://www.javacodegeeks.com/2013/01/couchbase-101-create-views-mapreduce-from-your-java-application.html)
+
+#####Clients and code integration with CouchBase
++ CouchBase protocol is a binary one taken from memcache. 
++ Clients available in Java, .NET, Ruby, Python, PHP, C (also a Go client but not stable)
++ Not JPA/JDO or abstraction layer support
++ CouchBase is working hard in N1QL, a query language to query documents in a way very similar to SQL:
+http://www.couchbase.com/communities/n1ql
+http://blog.couchbase.com/n1ql-it-makes-cents
+http://query.pub.couchbase.com/tutorial/#1
+
+#####License
++ There are two options: Community and Enterprise. It is the same license model that has MySQL. In Enterprise option, the (annual?) cost per node is 2700$: http://www.couchbase.com/couchbase-support
+
 
 #### CouchDB http://couchdb.apache.org/
 
-TODO
++ Many CouchBase core features: views, operations, indexes, bulk operations... apply also to CouchDB.
++ Default web interface (Futon) little bit different and much more simple and limited than that of CouchBase
++ Views are also made in Javascript with the same syntax. They can be created from Futon console.
++ The reduce funcions are a little bit more complicated (in CouchDB there are some kind of macros to do them)
++ CouchDB has Update Handlers that are similar to triggers. This functionality is still not available on CouchBase: http://www.couchbase.com/forums/thread/unable-fire-update-handler-couchbase
++ CouchDB has built-in memory cache. Instead, it just recommends using memcached manually to provide it.
++ Consistency: eventually consistent: conflict resolution on CouchDB is much more limited than the one of CouchBase.
++ Clustering and load balancing: recommends using HTTP load balancing software or hardware (proxies) manually. CouchDB does not natively support sharding. There are third-party tools that do it like BigCouch, Lounge or Pillow
++ Replication: replication between datacenters can be done by REST or using Futon. Automatic replication can be done using the flag ‘continuous: true’. It is not immediate, and it has an algorithm that decides the best moment for performance. Since CouchDB 1.1 it can remember replications after reboot.
+Clients: CouchDB uses a protocol based on a REST interface over HTTP so it can integrate easily with any language and technology.
++ License: it is an Apache project, so totally open source. 
+
 
 #### MongoDB http://www.mongodb.org/
 

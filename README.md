@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Le but de cet étude est de réaliser un premier état des lieux des solutions NoSQL envisageables afin de mettre en place une solution de partage de données dites `chaudes` entre nos sites d'exploitation.
+Le but de cet étude est de réaliser un premier état des lieux des solutions NoSQL envisageables afin de mettre en place une solution de partage de données dites _chaudes_ entre nos sites d'exploitation.
 
 La solution retenue devra apporter une solution à ces problématiques:
 + Partage de données en temps réel entre les deux sites de production afin de s'afranchir des problématiques de consistance des données et des sessions auxquelles nous avons des difficultés à faire face aujourd'hui.
@@ -10,7 +10,7 @@ La solution retenue devra apporter une solution à ces problématiques:
 
 ## Etude préliminaire
 
-### Solutions de type `Key-value Stores`
+### Solutions de type _Key-value Stores_
 
 #### Memcached http://memcached.org/
 
@@ -18,21 +18,23 @@ TODO
 
 #### Redis http://redis.io/
 
-TODO
+__Rejeté__ car c'est une solution orienté mémoire, ce qui fait qu'elle est limitée par la RAM disponible sur la machine http://redis.io/topics/faq. De plus, sa réplication de type _maitre-esclave_ ne répond pas à notre besoin.
 
 #### riak http://basho.com/riak/
 
-TODO
+__Rejetté__ rapidement pour ces raisons, nous n'avons par conséquent pas particulièrement creusé son étude:
++ Réplication _multi datacenter_ seulement disponible au travers d'une licence commerciale: http://basho.com/pricing/
++ Même s'il faut se méfier de telles publication, certains utilisateurs semblent avoir du mal à bien gérer les performances de l'outil come ici: http://boundary.com/blog/2012/12/21/case-study-inaka/
 
 #### Scalaris https://code.google.com/p/scalaris/
 
-TODO
+__Rejetté__ car le projet semble très peu connu et peu actif.
 
 #### Kyoto Tycoon http://fallabs.com/kyototycoon/
 
-TODO
+__Rejetté__ car le projet semble particulièrement peu actif.
 
-### Solutions de type `Wide Column Stores`
+### Solutions de type _Wide Column Stores_
 
 #### Cassandra  http://cassandra.apache.org/
 
@@ -40,17 +42,23 @@ TODO
 
 #### HBase http://hbase.apache.org/
 
-TODO
+__Rejetté__ car orienté _big data_, ce qui n'est pas réellement notre cas:
+
+> __When Should I Use HBase?__
+>
+> HBase isn't suitable for every problem. First, make sure you have enough data. If you have hundreds of millions or billions of rows, then HBase is a good candidate.
+>
+> http://hbase.apache.org/book/architecture.html#arch.overview
 
 #### Hypertable http://hypertable.org/
 
-TODO
+__Rejetté__ car orienté _big data_.
 
 ### Accumulo http://accumulo.apache.org/
 
-TODO
+__Rejetté__ car orienté _big data_.
 
-### Solutions de type `Document Stores`
+### Solutions de type _Document Stores_
 
 #### Couchbase http://www.couchbase.com/
 
@@ -62,17 +70,17 @@ TODO
 
 #### MongoDB http://www.mongodb.org/
 
-TODO
+Il est vrai que c'est une solution actuellement à la mode et réellement séduisane à l'usage. Cependant, nous l'avons __rejetté__ et n'avons pas creusé son éude car sa réplication de type _maitre-esclave_ ne répondant pas à notre principale exigence de partage d'informations entre sites.
 
 ### Solutions pour usages spécifiques
 
 #### Neo4j http://www.neo4j.org/
 
-TODO
+__Rejetté__ car il s'agit d'une base de données orienté graphe. C'est égallement une solution très inéressant mais de répondant pas le moins du monde à notre problématique.
 
 #### elasticSearch http://www.elasticsearch.org/
 
-TODO
+__Rejetté__ pour le besoin étudié ici car il s'agit d'une base de données orienté recherches textuelles.
 
 ## Ressources
 

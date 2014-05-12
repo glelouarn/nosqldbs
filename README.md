@@ -60,17 +60,18 @@ __Rejetté__ car orienté _big data_.
 
 ### Solutions de type _Document Stores_
 
-#### Couchbase http://www.couchbase.com/
+### Couchbase http://www.couchbase.com/
 
 #####Architecture
-+ The base is a CouchDB engine with a memcache layer. 
-+ Document store with unique ID.
-+ Data is persisted to disk and accessible by a cached memory layer (memcached)
-+ Buckets equals database. They have a name, they are shared (sharding) automatically in the cluster, can be secured by password and can be easily monitored from built-in console
++ The base of the product is a CouchDB engine with a memcache layer (key/value cache). 
++ Basically, it works storing documents (can be any type of content, but normally JSON) associated with an unique ID key.
++ Buckets are the basis, and a bucket == database. They have a name, they are balanced (sharding) automatically in the cluster, can be secured by password and can be easily monitored from built-in console
++ When buckets are created, they can be defined as memory buckets (Memcached only) or Couchbase buckets (uses disk to store and memory for caching)
 + Application can talk with one or more buckets but the buckets can’t communicate to each other.
 + The limit of buckets in a single cluster is 10
 + A bucket is divided in different vBuckets. There is a vBucket map that maps each vBucket to a node.
 + When the cluster is extended the vBucket are rebalanced (reallocated) between the different nodes (the information is “sharded” in the cluster).
++ Buckets can be configured to be replicated within the cluster (backups of the the vBuckets are copied in different nodes) so no information is lost if a node fails
 
 #####Working with CouchBase
 + Operations are very basic Create-Read-Update-Delete (CRUD operations) using the ID. Since it is a Map, the performance is always O(1).
@@ -89,7 +90,7 @@ __Rejetté__ car orienté _big data_.
 + Some information can be updated by two hosts simultaneously. In this case it is possible to use the CAS (Compare and Swap) functionality. This allows to obtain a hash to check if the information has changed. Also, the operation can perform also explicit locking if necessary
 
 #####Replication
-+ It is possible to create replicas of the buckets WITHIN the cluster. It is possible to configure up to 3 replicas. In this case, replica == backup
++ It is possible to create replicas of the buckets within the cluster and configure up to 3 replicas for each bucket. In this case, replica == backup
 + From version 2.0 there is a system to make replication between different clusters that can be geographically separated. It is called 'cross datacenter replication' (XDCR)
 + XDCR can be configured to work in unidirectional and bidirectional mode.
 + The consistency XDCR is eventual. It applies a mechanism to resolve conflicts (several updates over the same date).
